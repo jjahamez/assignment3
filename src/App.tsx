@@ -1,4 +1,3 @@
-import './app.css';
 import { useState } from "react";
 import { CubicInput } from "./components/CubicInput";
 import { CubicEquation } from "./components/CubicEquation";
@@ -20,15 +19,15 @@ export const App = () => {
   const p: number = (3 * a * c - b * b) / (3 * a * a);
 
   const q: number = (27 * a * a * d - 9 * a * b * c + 2 * b * b * b) / (27 * a * a * a);
-  const discriminant: number = (q / 2) * (q / 2) + (p / 3) * (p / 3) * (p / 3); // Math.pow(q / 2, 2) + Math.pow(p / 3, 3); breaks in certain cases (1,-1,0,0) 
+  const discriminant: number = Number(((q / 2) * (q / 2) + (p / 3) * (p / 3) * (p / 3)).toFixed(6)); // Math.pow(q / 2, 2) + Math.pow(p / 3, 3); breaks in certain cases (1,-1,0,0) 
 
   const roots: number[] = CubicSolver(a, b, p, q, discriminant);
   const turningPoints: TurningPoint[] = LocalMinMax(a, b, c, d);
 
   return (
     <div>
-      <h1>Cubic Equation Calculator</h1>
-      <p>Enter values for: ax³ + bx² + cx + d</p>
+      <h1 className="text-3xl font-bold text-gray-800 text-center my-4">Cubic Equation Calculator</h1>
+      <p className="text-lg text-gray-700 text-center mb-6">Enter values for: ax³ + bx² + cx + d</p>
 
       <CubicInput
         a={a}
@@ -51,8 +50,8 @@ export const App = () => {
       />
       {a === 0 && (
         <p className="text-2xl font-bold text-red-600 my-4 text-center"> *NOT a Cubic Function* </p>
-      )}      
-      
+      )}
+
       <div className="flex justify-center items-start gap-6 mt-5">
         <div className="w-1/2">
           <CubicTable
@@ -74,7 +73,7 @@ export const App = () => {
           />
         </div>
       </div>
-      
+
       <CubicHistory
         history={history}
         setA={setA}
