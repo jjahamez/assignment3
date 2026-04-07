@@ -1,11 +1,11 @@
-type CubicEquationProps = {
+type EquationProps = {
   a: number;
   b: number;
   c: number;
   d: number;
 };
 
-export const CubicEquation = ({ a, b, c, d }: CubicEquationProps) => {
+export const CubicEquation = ({ a, b, c, d }: EquationProps) => {
   const equation =
     `${a === 1 ? "" : a === -1 ? "-" : a}x³ ` +
     `${b !== 0 ? `${b > 0 ? "+" : "-"} ${Math.abs(b) === 1 ? "" : Math.abs(b)}x² ` : ""}` +

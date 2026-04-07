@@ -1,20 +1,14 @@
 import type { HistoryItem } from "../utils/types";
 
-type CubicHistoryProps = {
+type HistoryProps = {
   history: HistoryItem[];
-  setA: React.Dispatch<React.SetStateAction<number>>;
-  setB: React.Dispatch<React.SetStateAction<number>>;
-  setC: React.Dispatch<React.SetStateAction<number>>;
-  setD: React.Dispatch<React.SetStateAction<number>>;
+  setA: (value: number) => void;
+  setB: (value: number) => void;
+  setC: (value: number) => void;
+  setD: (value: number) => void;
 };
 
-export const CubicHistory = ({
-  history,
-  setA,
-  setB,
-  setC,
-  setD
-}: CubicHistoryProps) => {
+export const CubicHistory = ({history,setA,setB,setC,setD}: HistoryProps) => {
   return (
     <div>
       <h2>Saved History</h2>

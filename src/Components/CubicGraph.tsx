@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-type CubicGraphProps = {
+type GraphProps = {
   a: number;
   b: number;
   c: number;
@@ -8,7 +8,7 @@ type CubicGraphProps = {
   roots: number[];
 };
 
-export const CubicGraph = ({ a, b, c, d, roots }: CubicGraphProps) => {
+export const CubicGraph = ({ a, b, c, d, roots }: GraphProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -67,8 +67,11 @@ export const CubicGraph = ({ a, b, c, d, roots }: CubicGraphProps) => {
       const y: number = a * x ** 3 + b * x ** 2 + c * x + d;
       const py: number = centerY - y * scale;
 
-      if (px === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
+      if (px === 0) { 
+        ctx.moveTo(px, py); 
+      } else {
+        ctx.lineTo(px, py);
+      }
     }
 
     ctx.stroke();
@@ -77,7 +80,6 @@ export const CubicGraph = ({ a, b, c, d, roots }: CubicGraphProps) => {
     roots.forEach((root) => {
       const px: number = centerX + root * scale;
       const py: number = centerY;
-
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, 2 * Math.PI);
       ctx.fill();

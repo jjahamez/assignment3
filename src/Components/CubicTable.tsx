@@ -1,4 +1,4 @@
-type CubicTableProps = {
+type TableProps = {
   p: number;
   q: number;
   discriminant: number;
@@ -6,13 +6,7 @@ type CubicTableProps = {
   turningPoints: { x: number; y: number }[];
 };
 
-export const CubicTable = ({
-  p,
-  q,
-  discriminant,
-  roots,
-  turningPoints
-}: CubicTableProps) => {
+export const CubicTable = ({p, q, discriminant, roots, turningPoints}: TableProps) => {
   return (
     <div>
       <h2>Cubic Information</h2>
@@ -20,7 +14,7 @@ export const CubicTable = ({
       <table border={1}>
         <tbody>
           <tr>
-            <td>P Value</td>
+            <td>P Value</td>  
             <td>{p.toFixed(5)}</td>
           </tr>
           <tr>

@@ -10,10 +10,10 @@ import type { HistoryItem, TurningPoint } from "./utils/types";
 
 export const App = () => {
   const [a, setA] = useState<number>(1);
-  const [b, setB] = useState<number>(0);
-  const [c, setC] = useState<number>(0);
-  const [d, setD] = useState<number>(0);
-  
+  const [b, setB] = useState<number>(1);
+  const [c, setC] = useState<number>(1);
+  const [d, setD] = useState<number>(1);
+
   const [history, setHistory] = useState<HistoryItem[]>([]);
 
   const p: number = (3 * a * c - b * b) / (3 * a * a);
@@ -24,12 +24,7 @@ export const App = () => {
   const roots: number[] = CubicSolver(a, b, p, q, discriminant);
   const turningPoints: TurningPoint[] = LocalMinMax(a, b, c, d);
 
-  const handleSave = () => {
-    const newEntry: HistoryItem = { a, b, c, d };
-    setHistory([...history, newEntry]);
-  };
-
-   return (
+  return (
     <div>
       <h1>Cubic Equation Calculator</h1>
       <p>Enter values for: ax³ + bx² + cx + d</p>
@@ -43,53 +38,43 @@ export const App = () => {
         setB={setB}
         setC={setC}
         setD={setD}
-        onSave={handleSave}
+        setHistory={setHistory}
+        history={history}
       />
 
-      {a !== 0 && (
-        <CubicEquation
-          a={a}
-          b={b}
-          c={c}
-          d={d}
-        />
-      )}
+      <CubicEquation
+        a={a}
+        b={b}
+        c={c}
+        d={d}
+      />
 
       <div>
-        <div>
-          {a === 0 ? (
-            <div>
-              <p>*NOT a Cubic Function*</p>
-            </div>
-          ) : (
-            <CubicTable
-              p={p}
-              q={q}
-              discriminant={discriminant}
-              roots={roots}
-              turningPoints={turningPoints}
-            />
-          )}
-
-          <CubicHistory
-            history={history}
-            setA={setA}
-            setB={setB}
-            setC={setC}
-            setD={setD}
+      {a === 0 && <p>*NOT a Cubic Function*</p>}
+      <CubicTable
+          p={p}
+          q={q}
+          discriminant={discriminant}
+          roots={roots}
+          turningPoints={turningPoints} 
           />
-        </div>
-
-        {a !== 0 && (
-          <CubicGraph
-            a={a}
-            b={b}
-            c={c}
-            d={d}
-            roots={roots}
-          />
-        )}
+          
+      <CubicHistory
+          history={history}
+          setA={setA}
+          setB={setB}
+          setC={setC}
+          setD={setD}
+        />
       </div>
+
+      <CubicGraph
+        a={a}
+        b={b}
+        c={c}
+        d={d}
+        roots={roots}
+      />
     </div>
   );
 };
