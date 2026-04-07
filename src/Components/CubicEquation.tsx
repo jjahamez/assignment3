@@ -13,9 +13,9 @@ export const CubicEquation = ({ a, b, c, d }: EquationProps) => {
     `${d !== 0 ? `${d > 0 ? "+" : "-"} ${Math.abs(d)}` : ""}`;
 
   return (
-    <div>
-      <h2>Equation</h2>
-      <p>{equation}</p>
+    <div className="text-center my-6 p-4 border rounded-lg shadow-sm bg-gray-50">
+      <h2 className="text-2xl font-bold mb-2 text-gray-700">Cubic Equation</h2>
+      <p className="text-lg text-gray-900">{equation}</p>
     </div>
   );
 };

@@ -67,8 +67,8 @@ export const CubicGraph = ({ a, b, c, d, roots }: GraphProps) => {
       const y: number = a * x ** 3 + b * x ** 2 + c * x + d;
       const py: number = centerY - y * scale;
 
-      if (px === 0) { 
-        ctx.moveTo(px, py); 
+      if (px === 0) {
+        ctx.moveTo(px, py);
       } else {
         ctx.lineTo(px, py);
       }
@@ -87,9 +87,9 @@ export const CubicGraph = ({ a, b, c, d, roots }: GraphProps) => {
   }, [a, b, c, d, roots]);
 
   return (
-    <div>
-      <h2>Graph</h2>
-      <canvas ref={canvasRef} width={500} height={500}></canvas>
+    <div className="flex flex-col items-center my-4 p-4 bg-gray-50 rounded-lg shadow-sm">
+      <h2 className="text-xl font-semibold mb-2 text-gray-700">Graph</h2>
+      <canvas ref={canvasRef} width={500} height={500} className="border border-gray-300 rounded-lg bg-white"></canvas>
     </div>
   );
 };

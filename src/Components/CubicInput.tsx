@@ -10,7 +10,7 @@
     setC: (value: number) => void;
     setD: (value: number) => void;
     history: HistoryItem[];
-    setHistory: React.Dispatch<React.SetStateAction<HistoryItem[]>>;
+    setHistory: (history: HistoryItem[]) => void;
   };
 
   export const CubicInput = ({a, b, c, d, setA, setB, setC, setD, history, setHistory}: InputProps) => {
