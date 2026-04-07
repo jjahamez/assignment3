@@ -1,108 +1,41 @@
-// src/components/CubicInput.tsx
-import React, { useRef } from "react";
-import type { CubicCoefficients } from "../utils/types";
+type CubicInputProps = {
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+  setA: React.Dispatch<React.SetStateAction<number>>;
+  setB: React.Dispatch<React.SetStateAction<number>>;
+  setC: React.Dispatch<React.SetStateAction<number>>;
+  setD: React.Dispatch<React.SetStateAction<number>>;
+  onSave: () => void;
+};
 
-interface CubicInputProps {
-  setCoefficients: (coeffs: CubicCoefficients) => void;
-  setHistory: (history: CubicCoefficients[]) => void;
-  history: CubicCoefficients[];
-}
-
-export function CubicInput({ setCoefficients, setHistory, history }: CubicInputProps) {
-  const aRef = useRef<HTMLInputElement | null>(null);
-  const bRef = useRef<HTMLInputElement | null>(null);
-  const cRef = useRef<HTMLInputElement | null>(null);
-  const dRef = useRef<HTMLInputElement | null>(null);
-
-  function handleSave() {
-    if (!aRef.current || !bRef.current || !cRef.current || !dRef.current) return;
-
-    const nextCoeffs: CubicCoefficients = {
-      a: Number(aRef.current.value),
-      b: Number(bRef.current.value),
-      c: Number(cRef.current.value),
-      d: Number(dRef.current.value),
-    };
-
-    setCoefficients(nextCoeffs);            // update main cubic
-    setHistory([...history, nextCoeffs]);   // add to history
-  }
-
+export const CubicInput = ({
+  a,
+  b,
+  c,
+  d,
+  setA,
+  setB,
+  setC,
+  setD,
+  onSave
+}: CubicInputProps) => {
   return (
     <div>
-      <h2>Cubic Input</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSave();
-        }}
-      >
-        <label htmlFor="a">a:</label>
-        <input
-          type="number"
-          id="a"
-          ref={aRef}
-          defaultValue={0}
-          onChange={(e) =>
-            setCoefficients({
-              a: Number(e.currentTarget.value),
-              b: bRef.current ? Number(bRef.current.value) : 0,
-              c: cRef.current ? Number(cRef.current.value) : 0,
-              d: dRef.current ? Number(dRef.current.value) : 0,
-            })
-          }
-        />
+      <label>A: </label>
+      <input type="number" value={a} onChange={(e) => setA(Number(e.target.value))} />
 
-        <label htmlFor="b">b:</label>
-        <input
-          type="number"
-          id="b"
-          ref={bRef}
-          defaultValue={0}
-          onChange={(e) =>
-            setCoefficients({
-              a: aRef.current ? Number(aRef.current.value) : 0,
-              b: Number(e.currentTarget.value),
-              c: cRef.current ? Number(cRef.current.value) : 0,
-              d: dRef.current ? Number(dRef.current.value) : 0,
-            })
-          }
-        />
+      <label>B: </label>
+      <input type="number" value={b} onChange={(e) => setB(Number(e.target.value))} />
 
-        <label htmlFor="c">c:</label>
-        <input
-          type="number"
-          id="c"
-          ref={cRef}
-          defaultValue={0}
-          onChange={(e) =>
-            setCoefficients({
-              a: aRef.current ? Number(aRef.current.value) : 0,
-              b: bRef.current ? Number(bRef.current.value) : 0,
-              c: Number(e.currentTarget.value),
-              d: dRef.current ? Number(dRef.current.value) : 0,
-            })
-          }
-        />
+      <label>C: </label>
+      <input type="number" value={c} onChange={(e) => setC(Number(e.target.value))} />
 
-        <label htmlFor="d">d:</label>
-        <input
-          type="number"
-          id="d"
-          ref={dRef}
-          defaultValue={0}
-          onChange={(e) =>
-            setCoefficients({
-              a: aRef.current ? Number(aRef.current.value) : 0,
-              b: bRef.current ? Number(bRef.current.value) : 0,
-              c: cRef.current ? Number(cRef.current.value) : 0,
-              d: Number(e.currentTarget.value),
-            })
-          }
-        />
+      <label>D: </label>
+      <input type="number" value={d} onChange={(e) => setD(Number(e.target.value))} />
 
-        <button type="submit">Save</button>
-      </form>
+      <button onClick={onSave}>Save</button>
     </div>
   );
-}
+};

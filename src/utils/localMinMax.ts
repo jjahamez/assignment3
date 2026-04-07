@@ -1,23 +1,28 @@
-// src/utils/localMaxMin.ts
-import type { CubicCoefficients } from "./types";
+import type { TurningPoint } from "./types";
 
-// Calculate local maxima and minima (derivative = 3ax^2 + 2bx + c = 0)
-export function computeExtrema({ a, b, c }: CubicCoefficients) {
-  const extrema: { max?: { x: number; y: number }; min?: { x: number; y: number } } = {};
+export const LocalMinMax = (a: number, b: number, c: number, d: number): TurningPoint[] => {
+  const points: TurningPoint[] = [];
 
-  if (a === 0) return extrema; // Linear function, no local max/min
+  if (a === 0) {
+    return points;
+  }
 
-  const discriminant = 4 * b * b - 12 * a * 0; // derivative quadratic = 3ax^2 + 2bx + c, set to zero
-  const derivativeDiscriminant = b * b - 3 * a * c;
+  const discriminant: number = 4 * b * b - 12 * a * c;
 
-  if (derivativeDiscriminant < 0) return extrema; // no real extrema
+  if (discriminant < 0) {
+    return points;
+  }
 
-  const sqrtDisc = Math.sqrt(derivativeDiscriminant);
-  const x1 = (-b + sqrtDisc) / (3 * a);
-  const x2 = (-b - sqrtDisc) / (3 * a);
+  const x1: number = (-2 * b + Math.sqrt(discriminant)) / (6 * a);
+  const x2: number = (-2 * b - Math.sqrt(discriminant)) / (6 * a);
 
-  extrema.max = { x: Math.max(x1, x2), y: a * Math.max(x1, x2) ** 3 + b * Math.max(x1, x2) ** 2 + c * 0 };
-  extrema.min = { x: Math.min(x1, x2), y: a * Math.min(x1, x2) ** 3 + b * Math.min(x1, x2) ** 2 + c * 0 };
+  const y1: number = a * x1 ** 3 + b * x1 ** 2 + c * x1 + d;
+  const y2: number = a * x2 ** 3 + b * x2 ** 2 + c * x2 + d;
 
-  return extrema;
-}
+  points.push(
+    { x: x1, y: y1 },
+    { x: x2, y: y2 }
+  );
+
+  return points;
+};

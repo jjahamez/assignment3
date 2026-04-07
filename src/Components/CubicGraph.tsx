@@ -1,43 +1,43 @@
-// src/components/CubicGraph.tsx
-import React, { useRef, useEffect } from "react";
-import type { CubicCoefficients } from "../utils/types";
-import { solveCubic } from "../utils/cubicSolver";
+import { useEffect, useRef } from "react";
 
-interface CubicGraphProps {
-  coefficients: CubicCoefficients;
-}
+type CubicGraphProps = {
+  a: number;
+  b: number;
+  c: number;
+  d: number;
+  roots: number[];
+};
 
-export function CubicGraph({ coefficients }: CubicGraphProps) {
+export const CubicGraph = ({ a, b, c, d, roots }: CubicGraphProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const width = canvas.width;
-    const height = canvas.height;
-    const scale = 20; // pixels per unit
-    const centerX = width / 2;
-    const centerY = height / 2;
+    const width: number = canvas.width;
+    const height: number = canvas.height;
+    const scale: number = 21;
 
-    const { a, b, c, d } = coefficients;
-    const { roots } = solveCubic(coefficients);
-
-    // Clear canvas
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, width, height);
 
-    // Draw grid
-    ctx.strokeStyle = "lightgray";
+    const centerX: number = width / 2;
+    const centerY: number = height / 2;
+
+    ctx.strokeStyle = "DarkGrey";
     ctx.lineWidth = 1;
+
     for (let x = centerX % scale; x < width; x += scale) {
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, height);
       ctx.stroke();
     }
+
     for (let y = centerY % scale; y < height; y += scale) {
       ctx.beginPath();
       ctx.moveTo(0, y);
@@ -45,9 +45,9 @@ export function CubicGraph({ coefficients }: CubicGraphProps) {
       ctx.stroke();
     }
 
-    // Draw axes
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = "Black";
+    ctx.lineWidth = 3;
+
     ctx.beginPath();
     ctx.moveTo(0, centerY);
     ctx.lineTo(width, centerY);
@@ -58,36 +58,36 @@ export function CubicGraph({ coefficients }: CubicGraphProps) {
     ctx.lineTo(centerX, height);
     ctx.stroke();
 
-    // Draw cubic curve
-    if (a !== 0 || b !== 0 || c !== 0 || d !== 0) {
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      for (let px = 0; px < width; px++) {
-        const x = (px - centerX) / scale;
-        const y = a * x ** 3 + b * x ** 2 + c * x + d;
-        const py = centerY - y * scale;
-        if (px === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.stroke();
+    ctx.strokeStyle = "Red";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+
+    for (let px = 0; px < width; px++) {
+      const x: number = (px - centerX) / scale;
+      const y: number = a * x ** 3 + b * x ** 2 + c * x + d;
+      const py: number = centerY - y * scale;
+
+      if (px === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
     }
 
-    // Draw roots
-    ctx.fillStyle = "blue";
+    ctx.stroke();
+
+    ctx.fillStyle = "Blue";
     roots.forEach((root) => {
-      const px = centerX + root * scale;
-      const py = centerY;
+      const px: number = centerX + root * scale;
+      const py: number = centerY;
+
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, 2 * Math.PI);
       ctx.fill();
     });
-  }, [coefficients]);
+  }, [a, b, c, d, roots]);
 
   return (
     <div>
-      <h2>Cubic Graph</h2>
+      <h2>Graph</h2>
       <canvas ref={canvasRef} width={500} height={500}></canvas>
     </div>
   );
-}
+};

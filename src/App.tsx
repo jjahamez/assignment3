@@ -1,51 +1,95 @@
-// src/App.tsx
-import React, { useState } from "react";
-import type { CubicCoefficients, CubicResults } from "./utils/types";
-import { solveCubic } from "./utils/cubicSolver";
-import { computeExtrema } from "./utils/localMinMax";
-
+import { useState } from "react";
 import { CubicInput } from "./components/CubicInput";
+import { CubicEquation } from "./components/CubicEquation";
 import { CubicTable } from "./components/CubicTable";
 import { CubicGraph } from "./components/CubicGraph";
 import { CubicHistory } from "./components/CubicHistory";
+import { CubicSolver } from "./utils/cubicSolver";
+import { LocalMinMax } from "./utils/localMinMax";
+import type { HistoryItem, TurningPoint } from "./utils/types";
 
-export default function App() {
-  // Current coefficients of the cubic equation
-  const [coefficients, setCoefficients] = useState<CubicCoefficients>({
-    a: 0,
-    b: 0,
-    c: 0,
-    d: 0,
-  });
+export const App = () => {
+  const [a, setA] = useState<number>(1);
+  const [b, setB] = useState<number>(0);
+  const [c, setC] = useState<number>(0);
+  const [d, setD] = useState<number>(0);
+  
+  const [history, setHistory] = useState<HistoryItem[]>([]);
 
-  // History of saved cubic equations
-  const [history, setHistory] = useState<CubicCoefficients[]>([]);
+  const p: number = (3 * a * c - b * b) / (3 * a * a);
 
-  // Compute results dynamically whenever coefficients change
-  const cubicResults: CubicResults = {
-    ...solveCubic(coefficients),
-    extrema: computeExtrema(coefficients),
+  const q: number = (27 * a * a * d - 9 * a * b * c + 2 * b * b * b) / (27 * a * a * a);
+  const discriminant: number = (q / 2) * (q / 2) + (p / 3) * (p / 3) * (p / 3); // Math.pow(q / 2, 2) + Math.pow(p / 3, 3); breaks in certain cases (1,-1,0,0) 
+
+  const roots: number[] = CubicSolver(a, b, p, q, discriminant);
+  const turningPoints: TurningPoint[] = LocalMinMax(a, b, c, d);
+
+  const handleSave = () => {
+    const newEntry: HistoryItem = { a, b, c, d };
+    setHistory([...history, newEntry]);
   };
 
-  return (
+   return (
     <div>
-      <h1>Cubic Equation Solver</h1>
+      <h1>Cubic Equation Calculator</h1>
+      <p>Enter values for: ax³ + bx² + cx + d</p>
 
-      {/* Input component */}
       <CubicInput
-        setCoefficients={setCoefficients}
-        setHistory={setHistory}
-        history={history}
+        a={a}
+        b={b}
+        c={c}
+        d={d}
+        setA={setA}
+        setB={setB}
+        setC={setC}
+        setD={setD}
+        onSave={handleSave}
       />
 
-      {/* Table showing current cubic results */}
-      <CubicTable results={cubicResults} />
+      {a !== 0 && (
+        <CubicEquation
+          a={a}
+          b={b}
+          c={c}
+          d={d}
+        />
+      )}
 
-      {/* Graph of the current cubic */}
-      <CubicGraph coefficients={coefficients} />
+      <div>
+        <div>
+          {a === 0 ? (
+            <div>
+              <p>*NOT a Cubic Function*</p>
+            </div>
+          ) : (
+            <CubicTable
+              p={p}
+              q={q}
+              discriminant={discriminant}
+              roots={roots}
+              turningPoints={turningPoints}
+            />
+          )}
 
-      {/* History of previous cubic inputs */}
-      <CubicHistory history={history} setCoefficients={setCoefficients} />
+          <CubicHistory
+            history={history}
+            setA={setA}
+            setB={setB}
+            setC={setC}
+            setD={setD}
+          />
+        </div>
+
+        {a !== 0 && (
+          <CubicGraph
+            a={a}
+            b={b}
+            c={c}
+            d={d}
+            roots={roots}
+          />
+        )}
+      </div>
     </div>
   );
-}
+};
