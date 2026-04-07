@@ -1,3 +1,4 @@
+import './app.css';
 import { useState } from "react";
 import { CubicInput } from "./components/CubicInput";
 import { CubicEquation } from "./components/CubicEquation";
@@ -48,32 +49,38 @@ export const App = () => {
         c={c}
         d={d}
       />
-
-      <div>
-      {a === 0 && <p>*NOT a Cubic Function*</p>}
-      <CubicTable
-          p={p}
-          q={q}
-          discriminant={discriminant}
-          roots={roots}
-          turningPoints={turningPoints} 
+      {a === 0 && (
+        <p className="text-2xl font-bold text-red-600 my-4 text-center"> *NOT a Cubic Function* </p>
+      )}      
+      
+      <div className="flex justify-center items-start gap-6 mt-5">
+        <div className="w-1/2">
+          <CubicTable
+            p={p}
+            q={q}
+            discriminant={discriminant}
+            roots={roots}
+            turningPoints={turningPoints}
           />
-          
-      <CubicHistory
-          history={history}
-          setA={setA}
-          setB={setB}
-          setC={setC}
-          setD={setD}
-        />
-      </div>
+        </div>
 
-      <CubicGraph
-        a={a}
-        b={b}
-        c={c}
-        d={d}
-        roots={roots}
+        <div className="w-1/2">
+          <CubicGraph
+            a={a}
+            b={b}
+            c={c}
+            d={d}
+            roots={roots}
+          />
+        </div>
+      </div>
+      
+      <CubicHistory
+        history={history}
+        setA={setA}
+        setB={setB}
+        setC={setC}
+        setD={setD}
       />
     </div>
   );
